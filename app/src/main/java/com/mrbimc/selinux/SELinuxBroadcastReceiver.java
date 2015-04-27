@@ -1,5 +1,6 @@
 package com.mrbimc.selinux;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -7,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 
 import com.stericson.RootShell.RootShell;
 import com.stericson.RootShell.execution.Command;
@@ -60,7 +60,7 @@ public class SELinuxBroadcastReceiver extends BroadcastReceiver {
 
     private static void showNotification(Context context, String message){
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        Notification.Builder mBuilder = new Notification.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(message);
