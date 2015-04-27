@@ -58,7 +58,10 @@ public class CreditsActivity extends AppCompatActivity {
                     showDialog(getString(R.string.gpl3), "file:///android_asset/gpl3.txt");
                     return true;
                 case "apache2":
-                    showDialog(getString(R.string.gpl3), "file:///android_asset/apache2.txt");
+                    showDialog(getString(R.string.apache2), "file:///android_asset/apache2.txt");
+                    return true;
+                case "rootshell":
+                    showDialog(getString(R.string.gpl2), "file:///android_asset/gpl2.txt");
                     return true;
                 default:
                     return false;

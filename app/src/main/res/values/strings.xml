@@ -17,13 +17,15 @@
     <string name="notify_on_mode_change">Show notification after mode changed</string>
 
     <string name="ok">OK</string>
+    <string name="close">Close</string>
     <string name="about">About</string>
 
     <string name="category_author">Author</string>
     <string name="credits_author_summary">Idea and Creation</string>
     <string name="category_source_code">Source Code</string>
     <string name="category_licences">Licences</string>
+
     <string name="gpl3">GPLv3</string>
+    <string name="gpl2">GPLv2</string>
     <string name="apache2">Apache-2.0</string>
-    <string name="close">Close</string>
 </resources>

@@ -20,8 +20,12 @@
             android:title="@string/app_name"
             android:summary="@string/gpl3"/>
         <Preference
+            android:key="rootshell"
+            android:title="RootShell"
+            android:summary="@string/gpl2"/>
+        <Preference
             android:key="apache2"
-            android:title="AndroidAppCompatLib"
+            android:title="AndroidAppCompat"
             android:summary="@string/apache2"/>
     </PreferenceCategory>
 
