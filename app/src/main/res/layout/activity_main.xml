@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selinux_select_mode" />
+        <Button
+            android:id="@+id/button_permissive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setPermissive"
+            android:text="@string/selinux_permissive"
+            android:enabled="false"/>
+        <Button
+            android:id="@+id/button_enforcing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setEnforcing"
+            android:text="@string/selinux_enforcing"
+            android:enabled="false"/>
+        </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/holder"
+        android:gravity="center"
+        android:text="@string/notify_on_mode_change" />
+
+</RelativeLayout>

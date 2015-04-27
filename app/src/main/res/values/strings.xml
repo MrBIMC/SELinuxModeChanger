@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SELinuxModeChanger</string>
+
+    <string name="selinux_select_mode">Select SELinux mode:</string>
+    <string name="selinux_enforcing">Enforcing</string>
+    <string name="selinux_permissive">Permissive</string>
+
+    <string name="selinux_disabled">Looks that you don\'t have SELinux or it is disabled</string>
+    <string name="selinux_unreachable">Can\'t reach SELinux</string>
+
+    <string name="selinux_set_to_enforcing">SELinux mode changed to enforcing!</string>
+    <string name="selinux_set_to_permissive">SELinux mode changed to permissive!</string>
+
+    <string name="no_root_access">App was unable to gain root access</string>
+    <string name="no_root_access_summary">Superuser manager doesn\'t allow app to access SU or you don\'t have root at all. Fix this to use this SELinuxModeChanger!</string>
+
+    <string name="notify_on_mode_change">Show notification after mode changed</string>
+
+    <string name="ok">OK</string>
+    <string name="about">About</string>
+
+    <string name="category_author">Author</string>
+    <string name="credits_author_summary">Idea and Creation</string>
+    <string name="category_source_code">Source Code</string>
+    <string name="category_licences">Licences</string>
+    <string name="gpl3">GPLv3</string>
+    <string name="apache2">Apache-2.0</string>
+    <string name="close">Close</string>
+</resources>
