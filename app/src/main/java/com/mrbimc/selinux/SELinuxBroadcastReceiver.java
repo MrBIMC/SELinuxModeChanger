@@ -9,49 +9,59 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.stericson.RootShell.RootShell;
-import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Command;
 
 public class SELinuxBroadcastReceiver extends BroadcastReceiver {
 
+    public static final int PERMISSIVE = 0;
+    public static final int ENFORCING = 1;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        int selinux = sp.getInt("selinux", 3);
-        if (selinux == 0){ permiss(context); }
-        if (selinux == 1){ enforce(context); }
+        int selinux = PreferenceManager.getDefaultSharedPreferences(context).getInt("selinux", 3);
+        if (selinux == PERMISSIVE){ permiss(context); }
+        if (selinux == ENFORCING){ enforce(context); }
     }
 
-
-    public static void enforce(final Context ctx) {
+    public static void enforce(final Context context) {
         Command command = new Command(0, "/system/bin/setenforce 1") {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-
             @Override
-            public void commandCompleted(int arg0, int arg1) {
-                sp.edit().putInt("selinux", 1).apply();
-                if(sp.getInt("notify", 0) == 1) showNotification(ctx, ctx.getString(R.string.selinux_set_to_enforcing));
-            }
+            public void commandCompleted(int arg0, int arg1) { notifyStateChanged(context, ENFORCING); }
+            @Override
+            public void commandOutput(int i, String s) {}
+            @Override
+            public void commandTerminated(int i, String s) {}
         };
-        executeCommand(command, ctx);
+        executeCommand(command, context);
     }
 
-    public static void permiss(final Context ctx) {
+    public static void permiss(final Context context){
         Command command = new Command(0, "/system/bin/setenforce 0") {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-
             @Override
-            public void commandCompleted(int arg0, int arg1) {
-                sp.edit().putInt("selinux", 1).apply();
-                if(sp.getInt("notify", 0) == 1) showNotification(ctx, ctx.getString(R.string.selinux_set_to_permissive));
-            }
+            public void commandCompleted(int arg0, int arg1) { notifyStateChanged(context, PERMISSIVE);}
+            @Override
+            public void commandOutput(int i, String s) {}
+            @Override
+            public void commandTerminated(int i, String s) {}
         };
-        executeCommand(command, ctx);
+        executeCommand(command, context);
+    }
+
+    static void notifyStateChanged(Context context, int state) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt("selinux", state).apply();
+
+        if (sp.getInt("notify", 0) == 1) {
+            int message = state == PERMISSIVE ?
+                    R.string.selinux_set_to_permissive : R.string.selinux_set_to_enforcing;
+            showNotification(context, context.getString(message));
+        }
     }
 
     static void executeCommand(Command command, Context context){
         try {
-            RootShell.getShell(true).add(command);
+            RootTools.getShell(true).add(command);
         } catch (Exception e) {
             e.printStackTrace();
             showNotification(context, context.getString(R.string.no_root_access));

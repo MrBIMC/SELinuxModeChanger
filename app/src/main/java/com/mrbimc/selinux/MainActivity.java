@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.stericson.RootShell.RootShell;
-import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Command;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    isRoot = RootShell.isRootAvailable();
-                    isAccessGiven = RootShell.isAccessGiven();
+                    isRoot = RootTools.isRootAvailable();
+                    isAccessGiven = RootTools.isAccessGiven();
                 } catch (Exception e) { e.printStackTrace(); }
                 return null;
             }
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
             int status = 2;
 
             @Override
-            public void commandOutput(int id, String line) {
+            protected void output(int id, String line) {
+                super.output(id, line);
                 status = line.contains(getString(R.string.selinux_enforcing)) ? 0 : line.contains(getString(R.string.selinux_permissive)) ? 1 : 2;
-                super.commandOutput(id, line);
             }
 
             @Override
@@ -106,8 +106,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public void commandOutput(int id, String line) {}
+            @Override
+            public void commandTerminated(int i, String s) {}
         };
-        try { RootShell.getShell(true).add(command); } catch (Exception e) { e.printStackTrace(); }
+        try { RootTools.getShell(true).add(command); } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void setPermissive(View v){
@@ -147,9 +151,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_about) {
+        if (item.getItemId() == R.id.action_about)
             startActivity(new Intent(this, CreditsActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 }
