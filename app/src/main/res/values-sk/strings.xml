@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SELinuxModeChanger</string>
+    <string name="selinux_select_mode">Vyberte režim SELinux:</string>
+    <string name="selinux_enforcing">Vynútený</string>
+    <string name="selinux_permissive">Prípustný</string>
+    <string name="selinux_disabled">Zdá sa, že nemáte SELinux, alebo je zakázaný</string>
+    <string name="selinux_unreachable">Nedá sa dosiahnuť SELinux</string>
+    <string name="selinux_set_to_enforcing">Režim SELinux zmenený na vynútený!</string>
+    <string name="selinux_set_to_permissive">Režim SELinux zmenený na prípustný!</string>
+    <string name="no_root_access">Aplikácii sa nepodarilo získať prístup správcu</string>
+    <string name="no_root_access_summary">Správca superužívateľa nepovolil aplikácii pristupovať k SU, alebo nemáte root. Pre používanie aplikácie SELinuxModeChanger musíte tento problém opraviť!</string>
+    <string name="notify_on_mode_change">Zobraziť upozornenie po zmene režimu</string>
+    <string name="ok">OK</string>
+    <string name="close">Zavrieť</string>
+    <string name="about">O aplikácii</string>
+    <string name="category_author">Autor</string>
+    <string name="credits_author_summary">Nápad a tvorba</string>
+    <string name="category_source_code">Zdrojový kód</string>
+    <string name="category_licences">Licencie</string>
+    <string name="gpl3">GPLv3</string>
+    <string name="gpl2">GPLv2</string>
+    <string name="apache2">Apache-2.0</string>
+</resources>
