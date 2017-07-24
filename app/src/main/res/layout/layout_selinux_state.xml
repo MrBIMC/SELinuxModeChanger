@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="2dp"
+    android:layout_margin="8dp"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selinux_select_mode"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:layout_marginTop="8dp"
+            android:textAlignment="center"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+
+            <Button
+                android:id="@+id/buttonPermissive"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="68dp"
+                android:onClick="setPermissive"
+                android:text="@string/selinux_permissive"
+                android:enabled="false"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:id="@+id/buttonEnforcing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="68dp"
+                android:onClick="setEnforcing"
+                android:text="@string/selinux_enforcing"
+                android:enabled="false"
+                android:padding="8dp"
+                android:layout_margin="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

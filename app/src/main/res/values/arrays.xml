@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="selinux_commands">
+        <item>/system/bin/setenforce #STATE#</item>
+        <item>echo #STATE# > /sys/fs/selinux/enforce</item>
+    </string-array>
+
+    <string-array name="selinux_contexts">
+        <item>default</item>
+        <item>u:r:kernel:s0</item>
+        <item>u:r:init:s0</item>
+        <item>u:r:init_shell:s0</item>
+        <item>u:r:recovery:s0</item>
+        <item>u:r:supersu:s0</item>
+    </string-array>
+</resources>

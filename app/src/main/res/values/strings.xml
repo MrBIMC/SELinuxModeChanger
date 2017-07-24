@@ -12,20 +12,15 @@
     <string name="selinux_set_to_permissive">SELinux mode changed to permissive!</string>
 
     <string name="no_root_access">App was unable to gain root access</string>
-    <string name="no_root_access_summary">Superuser manager doesn\'t allow app to access SU or you don\'t have root at all. Fix this to use this SELinuxModeChanger!</string>
 
     <string name="notify_on_mode_change">Show notification after mode changed</string>
 
-    <string name="ok">OK</string>
-    <string name="close">Close</string>
-    <string name="about">About</string>
-
-    <string name="category_author">Author</string>
-    <string name="credits_author_summary">Idea and Creation</string>
-    <string name="category_source_code">Source Code</string>
-    <string name="category_licences">Licences</string>
-
-    <string name="gpl3">GPLv3</string>
-    <string name="gpl2">GPLv2</string>
-    <string name="apache2">Apache-2.0</string>
+    <string name="channel_name">Notifications</string>
+    <string name="requesting_root">Awaiting for root access…</string>
+    <string name="info_dialog_message">This app can change the SELinux Modes without having to permanently modify the boot script files of the device.\n\nAny device, by default, boots in default SELinux "Enforcing" mode. Every time you reboot your device app will execute the script to change SELinux to the mode you\'ve last selected.\n\nFor more information, check app\'s github page.</string>
+    <string name="button_close_dialog">Close dialog</string>
+    <string name="button_open_github">Open Github</string>
+    <string name="about_this_app">About this app</string>
+    <string name="select_su_command">Select SU command:</string>
+    <string name="select_su_context">Select SU context:</string>
 </resources>
