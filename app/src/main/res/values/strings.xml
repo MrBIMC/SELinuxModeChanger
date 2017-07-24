@@ -17,7 +17,7 @@
 
     <string name="channel_name">Notifications</string>
     <string name="requesting_root">Awaiting for root access…</string>
-    <string name="info_dialog_message">This app can change the SELinux Modes without having to permanently modify the boot script files of the device.\n\nAny device, by default, boots in default SELinux "Enforcing" mode. Every time you reboot your device app will execute the script to change SELinux to the mode you\'ve last selected.\n\nFor more information, check app\'s github page.</string>
+    <string name="info_dialog_message">This app can change the SELinux Modes without having to permanently modify the boot script files of the device.\n\nAny device, by default, boots in default SELinux "Enforcing" mode. Every time you reboot your device app will execute the script to change SELinux to the mode you\'ve last selected.\n\nFor more information, check app\'s github repo.</string>
     <string name="button_close_dialog">Close dialog</string>
     <string name="button_open_github">Open Github</string>
     <string name="about_this_app">About this app</string>

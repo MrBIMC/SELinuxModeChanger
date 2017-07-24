@@ -12,7 +12,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 20170724
-        versionName "4.0"
+        versionName "10.0"
     }
     buildTypes {
         release {
