@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  tools:targetApi="25">
+
+  <shortcut
+    android:shortcutId="permissive"
+    android:enabled="true"
+    android:icon="@mipmap/ic_shortcut_permissive"
+    android:shortcutShortLabel="@string/selinux_permissive"
+    android:shortcutLongLabel="@string/set_to_permissive"
+    android:shortcutDisabledMessage="@string/selinux_permissive">
+
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetPackage="com.mrbimc.selinux"
+      android:targetClass="com.mrbimc.selinux.ShortcutActivity"
+      android:data="selinux://permissive" />
+
+  </shortcut>
+
+  <shortcut
+    android:shortcutId="enforcing"
+    android:enabled="true"
+    android:icon="@mipmap/ic_shortcut_enforcing"
+    android:shortcutShortLabel="@string/selinux_enforcing"
+    android:shortcutLongLabel="@string/set_to_enforcing"
+    android:shortcutDisabledMessage="@string/selinux_enforcing">
+
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetPackage="com.mrbimc.selinux"
+      android:targetClass="com.mrbimc.selinux.ShortcutActivity"
+      android:data="selinux://enforcing" />
+
+  </shortcut>
+
+</shortcuts>

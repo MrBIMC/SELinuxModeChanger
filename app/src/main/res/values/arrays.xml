@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="selinux_commands">
-        <item>/system/bin/setenforce #STATE#</item>
-        <item>echo #STATE# > /sys/fs/selinux/enforce</item>
+        <item>/system/bin/setenforce $STATE</item>
+        <item>echo $STATE > /sys/fs/selinux/enforce</item>
     </string-array>
 
     <string-array name="selinux_contexts">

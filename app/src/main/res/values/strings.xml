@@ -14,8 +14,10 @@
     <string name="no_root_access">App was unable to gain root access</string>
 
     <string name="notify_on_mode_change">Show notification after mode changed</string>
+    <string name="start_on_boot">Automatically start on boot</string>
 
     <string name="channel_name">Notifications</string>
+    <string name="tap_for_details">Tap for details and options</string>
     <string name="requesting_root">Awaiting for root access…</string>
     <string name="info_dialog_message">This app can change the SELinux Modes without having to permanently modify the boot script files of the device.\n\nAny device, by default, boots in default SELinux "Enforcing" mode. Every time you reboot your device app will execute the script to change SELinux to the mode you\'ve last selected.\n\nFor more information, check app\'s github repo.</string>
     <string name="button_close_dialog">Close dialog</string>
@@ -23,4 +25,7 @@
     <string name="about_this_app">About this app</string>
     <string name="select_su_command">Select SU command:</string>
     <string name="select_su_context">Select SU context:</string>
+
+    <string name="set_to_permissive">Set to Permissive</string>
+    <string name="set_to_enforcing">Set to Enforcing</string>
 </resources>

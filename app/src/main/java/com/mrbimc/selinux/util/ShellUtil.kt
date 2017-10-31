@@ -17,10 +17,11 @@ private val shell by lazy { Shell.Builder()
 fun executeGetSELinuxState(): CompletableFuture<SELinuxState> {
     val future = CompletableFuture<SELinuxState>()
 
-    shell.addCommand("/system/bin/getenforce", 1) { _, _, output: MutableList<String> ->
-        val outputString = output.joinToString()
-        val isEnforcing = outputString.toLowerCase().contains("enforcing")
-        future.complete(if (isEnforcing) SELinuxState.ENFORCING else SELinuxState.PERMISSIVE)
+    if (Shell.SU.available()) {
+        future.complete(if (Shell.SU.isSELinuxEnforcing()) SELinuxState.ENFORCING else SELinuxState.PERMISSIVE)
+    }
+    else {
+        future.complete(SELinuxState.UNKNOWN)
     }
 
     return future
@@ -29,10 +30,15 @@ fun executeGetSELinuxState(): CompletableFuture<SELinuxState> {
 fun executeSetSELinuxState(state: SELinuxState, command: String): CompletableFuture<SELinuxState> {
     val future = CompletableFuture<SELinuxState>()
 
-    shell.addCommand(command, 1) { _, _, output: MutableList<String> ->
-        val outputString = output.joinToString()
-        val isError = outputString.trim().isNotEmpty()
-        future.complete(if (isError) SELinuxState.UNKNOWN else state)
+    if (Shell.SU.available()) {
+        shell.addCommand(command, 1) { _, _, output: MutableList<String> ->
+            val outputString = output.joinToString()
+            val isError = outputString.trim().isNotEmpty()
+            future.complete(if (isError) SELinuxState.UNKNOWN else state)
+        }
+    }
+    else {
+        future.complete(SELinuxState.UNKNOWN)
     }
 
     return future

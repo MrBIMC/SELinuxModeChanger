@@ -7,4 +7,8 @@ package com.mrbimc.selinux.util
 const val KEY_COMMAND = "selinux_command"
 const val KEY_CONTEXT = "selinux_context"
 const val KEY_NOTIFICATIONS = "notifications"
+const val KEY_AUTOSTART = "autostart"
 const val KEY_SELINUX_STATE = "selinux"
+
+const val SHORTCUT_ENFORCING = "enforcing"
+const val SHORTCUT_PERMISSIVE = "permissive"

@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.layout_command.*
 import kotlinx.android.synthetic.main.layout_context.*
 import kotlinx.android.synthetic.main.layout_notifications.*
 import kotlinx.android.synthetic.main.layout_selinux_state.*
-
+import kotlinx.android.synthetic.main.layout_autostart.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         checkCommand()
         checkContext()
         checkNotificationSettings()
+        checkAutoStartSettings()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun checkContext() {
+    private fun checkContext() {
         val items = resources.getStringArray(R.array.selinux_contexts)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
 
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun checkCommand() {
+    private fun checkCommand() {
         val items = resources.getStringArray(R.array.selinux_commands)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
 
@@ -97,15 +98,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun checkNotificationSettings() {
-        notificationsSwitch.isChecked = sp.getBoolean("notifications", true)
+    private fun checkNotificationSettings() {
+        notificationsSwitch.isChecked = sp.getBoolean(KEY_NOTIFICATIONS, true)
 
         notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
             sp.edit().putBoolean(KEY_NOTIFICATIONS, isChecked).apply()
         }
     }
 
-    fun checkSELinuxState() {
+    private fun checkAutoStartSettings() {
+        autoStartSwitch.isChecked = sp.getBoolean(KEY_AUTOSTART, true)
+
+        autoStartSwitch.setOnCheckedChangeListener { _, isChecked ->
+            sp.edit().putBoolean(KEY_AUTOSTART, isChecked).apply()
+        }
+    }
+
+    private fun checkSELinuxState() {
 
         val ad = LovelyProgressDialog(this)
                 .setTopColorRes(R.color.colorAccent)
@@ -139,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showInfoDialog(): Boolean {
+    private fun showInfoDialog(): Boolean {
         LovelyStandardDialog(this)
                 .setTopColorRes(R.color.colorAccent)
                 .setTopTitle(getString(R.string.about_this_app))
@@ -156,7 +165,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun openGithub() {
+    private fun openGithub() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MrBIMC/SELinuxModeChanger")))
     }
 

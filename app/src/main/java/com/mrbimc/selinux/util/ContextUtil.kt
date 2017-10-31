@@ -23,10 +23,6 @@ import kotlinx.coroutines.experimental.launch
 fun Context.getSELinuxState(callback: (SELinuxState) -> Unit) = launch(CommonPool) {
     val sp = PreferenceManager.getDefaultSharedPreferences(this@getSELinuxState)
     when(executeGetSELinuxState().get()) {
-        SELinuxState.UNKNOWN -> {
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
-            callback(SELinuxState.UNKNOWN)
-        }
         SELinuxState.ENFORCING -> {
             sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.ENFORCING.value).apply()
             callback(SELinuxState.ENFORCING)
@@ -34,6 +30,10 @@ fun Context.getSELinuxState(callback: (SELinuxState) -> Unit) = launch(CommonPoo
         SELinuxState.PERMISSIVE -> {
             sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.PERMISSIVE.value).apply()
             callback(SELinuxState.PERMISSIVE)
+        }
+        else -> { // SELinuxState.UNKNOWN && black magic cases
+            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
+            callback(SELinuxState.UNKNOWN)
         }
     }
 }
@@ -44,7 +44,7 @@ fun Context.setSELinuxState(state: SELinuxState, callback: (SELinuxState) -> Uni
     val defaultCommand = resources.getStringArray(R.array.selinux_commands)[0]
     val defaultContext = resources.getStringArray(R.array.selinux_contexts)[0]
 
-    val command = sp.getString(KEY_COMMAND, defaultCommand).replace("#STATE#", "${state.value}")
+    val command = sp.getString(KEY_COMMAND, defaultCommand).replace("\$STATE", "${state.value}")
     val context = sp.getString(KEY_CONTEXT, defaultContext)
 
     var commandToExecute = command
@@ -54,11 +54,6 @@ fun Context.setSELinuxState(state: SELinuxState, callback: (SELinuxState) -> Uni
     }
 
     when(executeSetSELinuxState(state, commandToExecute).get()) {
-        SELinuxState.UNKNOWN -> {
-            createNotification(getString(R.string.no_root_access))
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
-            callback(SELinuxState.UNKNOWN)
-        }
         SELinuxState.ENFORCING -> {
             createNotification(getString(R.string.selinux_set_to_enforcing))
             sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.ENFORCING.value).apply()
@@ -68,6 +63,11 @@ fun Context.setSELinuxState(state: SELinuxState, callback: (SELinuxState) -> Uni
             createNotification(getString(R.string.selinux_set_to_permissive))
             sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.PERMISSIVE.value).apply()
             callback(SELinuxState.PERMISSIVE)
+        }
+        else -> { // SELinuxState.UNKNOWN && black magic cases
+            createNotification(getString(R.string.no_root_access))
+            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
+            callback(SELinuxState.UNKNOWN)
         }
     }
 }
@@ -85,13 +85,14 @@ fun Context.createNotification(message: String) {
     val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val contentIntent = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
 
-    val notificationID = 1
+    val notificationID = 12459
     val channelID = KEY_NOTIFICATIONS
 
     val notification = NotificationCompat.Builder(this, channelID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.security)
             .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-            .setContentText(message)
+            .setContentTitle(message)
+            .setContentText(getString(R.string.tap_for_details))
             .setContentIntent(contentIntent)
             .setAutoCancel(false)
             .build()
@@ -104,9 +105,9 @@ fun Context.createNotificationChannel() {
     val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val id = KEY_NOTIFICATIONS
     val name = getString(R.string.channel_name)
-    val importance = NotificationManager.IMPORTANCE_UNSPECIFIED
-
+    val importance = NotificationManager.IMPORTANCE_DEFAULT
     val channel = NotificationChannel(id, name, importance)
+
     channel.enableLights(true)
     channel.lightColor = Color.GREEN
     channel.enableVibration(false)
