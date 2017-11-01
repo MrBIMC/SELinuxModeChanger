@@ -46,17 +46,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setEnforcing(v: View) = setSELinuxState(SELinuxState.ENFORCING) {
-        runOnUiThread {
-            buttonEnforcing.isEnabled = false
-            buttonPermissive.isEnabled = true
-        }
+        handleButtons(it)
     }
 
     fun setPermissive(v: View) = setSELinuxState(SELinuxState.PERMISSIVE) {
-        runOnUiThread {
-            buttonEnforcing.isEnabled = true
-            buttonPermissive.isEnabled = false
-        }
+        handleButtons(it)
     }
 
     private fun checkContext() {
@@ -124,29 +118,33 @@ class MainActivity : AppCompatActivity() {
 
         getSELinuxState() {
             ad.cancel()
-
-            when (it) {
-                SELinuxState.UNKNOWN -> {
-                    runOnUiThread {
-                        buttonEnforcing.isEnabled = false
-                        buttonPermissive.isEnabled = false
-                    }
-                }
-                SELinuxState.PERMISSIVE -> {
-                    runOnUiThread {
-                        buttonEnforcing.isEnabled = true
-                        buttonPermissive.isEnabled = false
-                    }
-                }
-                SELinuxState.ENFORCING -> {
-                    runOnUiThread {
-                        buttonEnforcing.isEnabled = false
-                        buttonPermissive.isEnabled = true
-                    }
-                }
-            }
+            handleButtons(it)
         }
     }
+
+    private fun handleButtons(state: SELinuxState) = when (state) {
+            SELinuxState.PERMISSIVE -> {
+                runOnUiThread {
+                    buttonEnforcing.isEnabled = true
+                    buttonPermissive.isEnabled = false
+                }
+            }
+            SELinuxState.ENFORCING -> {
+                runOnUiThread {
+                    buttonEnforcing.isEnabled = false
+                    buttonPermissive.isEnabled = true
+                }
+            }
+            SELinuxState.NOROOT -> {
+                runOnUiThread {
+                    buttonEnforcing.isEnabled = false
+                    buttonPermissive.isEnabled = false
+                }
+            }
+            SELinuxState.UNSWITCHABLE -> {
+                // do nothing
+            }
+        }
 
     private fun showInfoDialog(): Boolean {
         LovelyStandardDialog(this)

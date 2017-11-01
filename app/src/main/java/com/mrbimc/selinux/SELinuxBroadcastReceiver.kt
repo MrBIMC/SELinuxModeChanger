@@ -18,11 +18,12 @@ class SELinuxBroadcastReceiver : BroadcastReceiver() {
             return
         }
 
-        val selinuxState = sp.getInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value)
-        when (selinuxState) {
-            0 -> context.setSELinuxState(SELinuxState.PERMISSIVE)
-            1 -> context.setSELinuxState(SELinuxState.ENFORCING)
-            else -> context.createNotification(context.getString(R.string.no_root_access))
+        val selinuxInt = sp.getInt(KEY_SELINUX_STATE, SELinuxState.NOROOT.value)
+        when (selinuxInt) {
+            SELinuxState.PERMISSIVE.value -> context.setSELinuxState(SELinuxState.PERMISSIVE)
+            SELinuxState.ENFORCING.value -> context.setSELinuxState(SELinuxState.ENFORCING)
+            SELinuxState.NOROOT.value -> context.createNotification(context.getString(R.string.no_root_access))
+            SELinuxState.UNSWITCHABLE.value -> context.createNotification(context.getString(R.string.unswitchable_context))
         }
     }
 }

@@ -22,19 +22,9 @@ import kotlinx.coroutines.experimental.launch
 
 fun Context.getSELinuxState(callback: (SELinuxState) -> Unit) = launch(CommonPool) {
     val sp = PreferenceManager.getDefaultSharedPreferences(this@getSELinuxState)
-    when(executeGetSELinuxState().get()) {
-        SELinuxState.ENFORCING -> {
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.ENFORCING.value).apply()
-            callback(SELinuxState.ENFORCING)
-        }
-        SELinuxState.PERMISSIVE -> {
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.PERMISSIVE.value).apply()
-            callback(SELinuxState.PERMISSIVE)
-        }
-        else -> { // SELinuxState.UNKNOWN && black magic cases
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
-            callback(SELinuxState.UNKNOWN)
-        }
+    executeGetSELinuxState().whenCompleteAsync { state, _ ->
+        sp.edit().putInt(KEY_SELINUX_STATE, state.value).apply()
+        callback(state)
     }
 }
 
@@ -53,22 +43,24 @@ fun Context.setSELinuxState(state: SELinuxState, callback: (SELinuxState) -> Uni
         commandToExecute = "su --context $context -c \"$command\""
     }
 
-    when(executeSetSELinuxState(state, commandToExecute).get()) {
-        SELinuxState.ENFORCING -> {
-            createNotification(getString(R.string.selinux_set_to_enforcing))
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.ENFORCING.value).apply()
-            callback(SELinuxState.ENFORCING)
+    executeSetSELinuxState(state, commandToExecute).whenCompleteAsync { (realState, desiredState), _ ->
+        when(realState) {
+            SELinuxState.ENFORCING -> {
+                createNotification(getString(R.string.selinux_set_to_enforcing))
+            }
+            SELinuxState.PERMISSIVE -> {
+                createNotification(getString(R.string.selinux_set_to_permissive))
+            }
+            SELinuxState.NOROOT -> {
+                createNotification(getString(R.string.no_root_access))
+            }
+            SELinuxState.UNSWITCHABLE -> {
+                createNotification(getString(R.string.unswitchable_context))
+            }
         }
-        SELinuxState.PERMISSIVE -> {
-            createNotification(getString(R.string.selinux_set_to_permissive))
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.PERMISSIVE.value).apply()
-            callback(SELinuxState.PERMISSIVE)
-        }
-        else -> { // SELinuxState.UNKNOWN && black magic cases
-            createNotification(getString(R.string.no_root_access))
-            sp.edit().putInt(KEY_SELINUX_STATE, SELinuxState.UNKNOWN.value).apply()
-            callback(SELinuxState.UNKNOWN)
-        }
+
+        sp.edit().putInt(KEY_SELINUX_STATE, realState.value).apply()
+        callback(realState)
     }
 }
 

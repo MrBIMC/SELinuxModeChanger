@@ -12,6 +12,7 @@
     <string name="selinux_set_to_permissive">SELinux mode changed to permissive!</string>
 
     <string name="no_root_access">App was unable to gain root access</string>
+    <string name="unswitchable_context">App was unable switch SELinux state</string>
 
     <string name="notify_on_mode_change">Show notification after mode changed</string>
     <string name="start_on_boot">Automatically start on boot</string>

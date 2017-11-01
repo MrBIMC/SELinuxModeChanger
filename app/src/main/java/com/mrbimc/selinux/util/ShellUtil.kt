@@ -7,7 +7,7 @@ import java8.util.concurrent.CompletableFuture
  * Created by Pavel Sikun on 23.07.17.
  */
 
-enum class SELinuxState(val value: Int) { PERMISSIVE(0), ENFORCING(1), UNKNOWN(3) }
+enum class SELinuxState(val value: Int) { PERMISSIVE(0), ENFORCING(1), NOROOT(3), UNSWITCHABLE(4) }
 
 private val shell by lazy { Shell.Builder()
         .setShell("su")
@@ -18,27 +18,27 @@ fun executeGetSELinuxState(): CompletableFuture<SELinuxState> {
     val future = CompletableFuture<SELinuxState>()
 
     if (Shell.SU.available()) {
-        future.complete(if (Shell.SU.isSELinuxEnforcing()) SELinuxState.ENFORCING else SELinuxState.PERMISSIVE)
+        shell.addCommand("/system/bin/getenforce", 1) { _, _, output: MutableList<String>? ->
+            val outputString = output?.joinToString() ?: "enforcing"
+            val isEnforcing = outputString.toLowerCase().contains("enforcing")
+            future.complete(if (isEnforcing) SELinuxState.ENFORCING else SELinuxState.PERMISSIVE)
+        }
     }
     else {
-        future.complete(SELinuxState.UNKNOWN)
+        future.complete(SELinuxState.NOROOT)
     }
 
     return future
 }
 
-fun executeSetSELinuxState(state: SELinuxState, command: String): CompletableFuture<SELinuxState> {
-    val future = CompletableFuture<SELinuxState>()
+fun executeSetSELinuxState(state: SELinuxState, command: String): CompletableFuture<Pair<SELinuxState, SELinuxState>> {
+    val future = CompletableFuture<Pair<SELinuxState, SELinuxState>>() //returning (RealState, DesiredState)
 
-    if (Shell.SU.available()) {
-        shell.addCommand(command, 1) { _, _, output: MutableList<String> ->
-            val outputString = output.joinToString()
-            val isError = outputString.trim().isNotEmpty()
-            future.complete(if (isError) SELinuxState.UNKNOWN else state)
+    shell.addCommand(command, 1) { _, _, _: MutableList<String>? ->
+        executeGetSELinuxState().whenCompleteAsync { systemState, _ ->
+            val resultState = if (systemState == state) systemState else SELinuxState.UNSWITCHABLE
+            future.complete(resultState to state)
         }
-    }
-    else {
-        future.complete(SELinuxState.UNKNOWN)
     }
 
     return future
